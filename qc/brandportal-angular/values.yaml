@@ -8,9 +8,6 @@ app-template:
           image:
             repository: acrdmspro.azurecr.io/brandportal-angular
             tag: 8383
-          env:
-            _ENV: qc
-            TZ: Asia/Saigon 
   service:
     main:
       ports:
