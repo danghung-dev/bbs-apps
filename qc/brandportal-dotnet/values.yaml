@@ -5,16 +5,24 @@ app-template:
   controllers:
     main:
       strategy: RollingUpdate
+      volumes:
+        - name: brandportal-dotnet-secrets
+          secret:
+            secretName: brandportal-dotnet-secrets
       # rollingUpdate:
       #   maxUnavailable: 0
       #   maxSurge: 1
       containers:
         main:
+          volumemounts:
+            - name: brandportal-dotnet-secrets
+              mountPath: /app/appsettings.secrets.json
+              subPath: appsettings.secrets.json
           image:
-            repository: acrdmspro.azurecr.io/brandportal-angular
-            tag: 8383
+            repository: acrdmspro.azurecr.io/brandportal-dotnet
+            tag: 8391
           env:
-            _ENV: qc
+            ASPNETCORE_ENVIRONMENT: Production
             TZ: Asia/Saigon             
           probes:
             liveness:
@@ -23,7 +31,7 @@ app-template:
               spec:
                 httpGet:
                   path: /health
-                  port: 80
+                  port: 8080
                 initialDelaySeconds: 0
                 periodSeconds: 10
                 timeoutSeconds: 5
@@ -36,7 +44,7 @@ app-template:
               spec:
                 httpGet:
                   path: /health
-                  port: 80
+                  port: 8080
                 initialDelaySeconds: 0
                 periodSeconds: 10
                 timeoutSeconds: 5
@@ -48,7 +56,7 @@ app-template:
               spec:
                 httpGet:
                   path: /health
-                  port: 80
+                  port: 8080
                 initialDelaySeconds: 0
                 periodSeconds: 10
                 timeoutSeconds: 5
@@ -58,7 +66,7 @@ app-template:
     main:
       ports:
         http:
-          port: 80
+          port: 8080
           protocol: HTTP
   ingress:
     main:
@@ -67,7 +75,7 @@ app-template:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-http-issuer
       hosts:
-        - host: &host test.bonbonshop.vn
+        - host: &host test-api.bonbonshop.vn
           paths:
             - path: /
               pathType: Prefix
@@ -77,4 +85,4 @@ app-template:
       tls:
         - hosts:
             - *host
-          secretName: brandportal-angular-tls-certificate
+          secretName: brandportal-dotnet-tls-certificate
