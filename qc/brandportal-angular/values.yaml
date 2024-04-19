@@ -4,12 +4,12 @@ app-template:
       - name: acr-auth
   controllers:
     main:
+      strategy: RollingUpdate
+      # rollingUpdate:
+      #   maxUnavailable: 0
+      #   maxSurge: 1
       containers:
         main:
-          strategy: RollingUpdate
-          # rollingUpdate:
-          #   maxUnavailable: 0
-          #   maxSurge: 1
           image:
             repository: acrdmspro.azurecr.io/brandportal-angular
             tag: 8383
