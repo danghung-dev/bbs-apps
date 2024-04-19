@@ -15,17 +15,17 @@ app-template:
             tag: 8383
           probes:
             liveness:
-            enabled: true
-            custom: true
-            spec:
-              httpGet:
-                path: /health
-                port: 80
-              initialDelaySeconds: 0
-              periodSeconds: 10
-              timeoutSeconds: 5
-              successThreshold: 1
-              failureThreshold: 3
+              enabled: true
+              custom: true
+              spec:
+                httpGet:
+                  path: /health
+                  port: 80
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
 
             readiness:
               enabled: true
