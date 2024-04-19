@@ -1,13 +1,51 @@
 app-template:
+  defaultPodOptions:
+    imagePullSecrets:
+      - name: acr-auth
   controllers:
     main:
-      imagePullSecrets:
-        - name: acr-auth
       containers:
         main:
           image:
             repository: acrdmspro.azurecr.io/brandportal-angular
             tag: 8383
+          probes:
+            liveness:
+              enabled: true
+              custom: true
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
+            readiness:
+              enabled: true
+              custom: true
+              type: HTTP
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
+            startup:
+              enabled: true
+              custom: true
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
   service:
     main:
       ports:
