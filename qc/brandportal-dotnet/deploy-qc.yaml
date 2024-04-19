@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: brandportal-dotnet-services
+  namespace: qc
+  labels:
+    app: brandportal-dotnet-services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: brandportal-dotnet-services
+  template:
+    metadata:
+      labels:
+        app: brandportal-dotnet-services
+    spec:
+      volumes:
+        - name: brandportal-dotnet-secrets
+          secret:
+            secretName: brandportal-dotnet-secrets
+      containers:
+        - name: brandportal-dotnet-services
+          image: acrdmspro.azurecr.io/brandportal-dotnet:8391
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: TZ
+              value: Asia/Saigon
+          resources:
+            limits:
+              cpu: '2000m'
+              memory: '9Gi'
+            requests:
+              cpu: 10m
+          volumeMounts:
+            - name: brandportal-dotnet-secrets
+              mountPath: /app/appsettings.secrets.json
+              subPath: appsettings.secrets.json
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+        - name: acr-auth
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: brandportal-dotnet-services
+  namespace: qc
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  selector:
+    app: brandportal-dotnet-services
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: brandportal-dotnet-qc
+  namespace: qc
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http-issuer  
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: test-api.bonbonshop.vn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: brandportal-dotnet-services
+                port:
+                  number: 80
+
