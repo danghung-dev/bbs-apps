@@ -18,8 +18,8 @@ app-template:
     main:
       enabled: true
       className: nginx
-      # annotations:
-      #   cert-manager.io/cluster-issuer: letsencrypt-prod
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-http-issuer
       hosts:
         - host: &host test.bonbonshop.vn
           paths:
