@@ -87,7 +87,7 @@ spec:
                 name: brandportal-dotnet-services
                 port:
                   number: 80
-      tls:
-        - hosts:
-            - *host
-          secretName: brandportal-dotnet-tls-certificate
+  tls:
+    - hosts:
+        - *host
+      secretName: brandportal-dotnet-tls-certificate
