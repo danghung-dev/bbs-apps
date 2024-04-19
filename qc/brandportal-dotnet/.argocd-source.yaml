@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - acrdmspro.azurecr.io/brandportal-dotnet:8391
