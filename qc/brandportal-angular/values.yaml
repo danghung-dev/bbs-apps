@@ -12,7 +12,7 @@ app-template:
           probes:
             liveness:
               enabled: true
-              custom: true
+              custom: false
               httpGet:
                 path: /health
                 port: 80
