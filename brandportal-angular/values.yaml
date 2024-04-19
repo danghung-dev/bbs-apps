@@ -27,7 +27,7 @@ app-template:
             readiness:
               enabled: true
               custom: true
-              type: http
+              type: HTTP
               path: /
               port: 80
               spec:
