@@ -11,6 +11,43 @@ app-template:
           env:
             _ENV: qc
             TZ: Asia/Saigon 
+          probes:
+            liveness:
+              enabled: true
+              custom: true
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
+            readiness:
+              enabled: true
+              custom: true
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
+            startup:
+              enabled: true
+              custom: true
+              type: http
+              path: /
+              port: 80
+              spec:
+                initialDelaySeconds: 0
+                periodSeconds: 10
+                timeoutSeconds: 5
+                successThreshold: 1
+                failureThreshold: 3
   service:
     main:
       ports:
