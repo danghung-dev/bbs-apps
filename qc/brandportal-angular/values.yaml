@@ -13,18 +13,18 @@ app-template:
             liveness:
               enabled: true
               custom: true
-              type: http
-              path: /
-              port: 80
-              spec:
-                initialDelaySeconds: 0
-                periodSeconds: 10
-                timeoutSeconds: 5
-                successThreshold: 1
-                failureThreshold: 3
+              httpGet:
+                path: /health
+                port: 80
+                scheme: HTTP
+              initialDelaySeconds: 10
+              timeoutSeconds: 10
+              periodSeconds: 15
+              successThreshold: 1
+              failureThreshold: 5
             readiness:
               enabled: true
-              custom: true
+              custom: false
               type: HTTP
               path: /
               port: 80
@@ -36,7 +36,7 @@ app-template:
                 failureThreshold: 3
             startup:
               enabled: true
-              custom: true
+              custom: false
               type: http
               path: /
               port: 80
