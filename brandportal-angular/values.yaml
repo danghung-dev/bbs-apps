@@ -1,0 +1,34 @@
+app-template:
+  controllers:
+    main:
+      imagePullSecrets:
+        - name: acr-auth
+      containers:
+        main:
+          image:
+            repository: acrdmspro.azurecr.io/brandportal-angular
+            tag: 8383
+  service:
+    main:
+      ports:
+        http:
+          port: 80
+          protocol: HTTP
+  ingress:
+    main:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
+        - host: &host test.bonbonshop.vn
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: main
+                port: http
+      tls:
+        - hosts:
+            - *host
+          secretName: brandportal-angular-tls-certificate
