@@ -7,32 +7,33 @@ app-template:
       containers:
         main:
           strategy: RollingUpdate
-          rollingUpdate:
-            maxUnavailable: 0
-            maxSurge: 1
+          # rollingUpdate:
+          #   maxUnavailable: 0
+          #   maxSurge: 1
           image:
             repository: acrdmspro.azurecr.io/brandportal-angular
             tag: 8383
           probes:
             liveness:
-              enabled: true
-              custom: false
-              type: HTTP
-              path: /health
-              port: 80
-              spec:
-                initialDelaySeconds: 0
-                periodSeconds: 10
-                timeoutSeconds: 5
-                successThreshold: 1
-                failureThreshold: 3
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /health
+                port: 80
+              initialDelaySeconds: 0
+              periodSeconds: 10
+              timeoutSeconds: 5
+              successThreshold: 1
+              failureThreshold: 3
+
             readiness:
               enabled: true
-              custom: false
-              type: HTTP
-              path: /health
-              port: 80
+              custom: true
               spec:
+                httpGet:
+                  path: /health
+                  port: 80
                 initialDelaySeconds: 0
                 periodSeconds: 10
                 timeoutSeconds: 5
@@ -40,11 +41,11 @@ app-template:
                 failureThreshold: 3
             startup:
               enabled: true
-              custom: false
-              type: HTTP
-              path: /health
-              port: 80
+              custom: true
               spec:
+                httpGet:
+                  path: /health
+                  port: 80
                 initialDelaySeconds: 0
                 periodSeconds: 10
                 timeoutSeconds: 5
