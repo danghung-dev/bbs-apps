@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http-issuer
+  name: auth-bbs
+  namespace: qc
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: auth-bbs.qc.bonbonshop.vn
+    http:
+      paths:
+      - backend:
+          service:
+            name: auth-bbs
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - auth-bbs.qc.bonbonshop.vn
+    secretName: auth-bbs-tls-certificate
